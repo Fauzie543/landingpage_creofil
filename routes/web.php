@@ -2,14 +2,19 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
-Route::view('/menu', 'pages.menu')->name('menu');
-Route::view('/about', 'pages.about')->name('about');
-Route::view('/event', 'pages.event')->name('event');
-Route::view('/contact', 'pages.contact')->name('contact');
+Route::get('/menu', [MenuController::class, 'index'])->name('menu');
+Route::get('/about', [AboutController::class, 'show'])->name('about');
+Route::get('/event', [EventController::class, 'index'])->name('event');
+Route::get('/contact', [ContactController::class, 'show'])->name('contact');
+Route::post('/contact/submit', [ContactController::class, 'submitFeedback'])->name('contact.submit');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

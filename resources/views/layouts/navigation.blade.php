@@ -15,11 +15,15 @@
             <!-- Logo in the Center -->
             <div>
                 @if ($company && $company->img_url)
+                <a href="{{ route('landing') }}">
                     <img src="{{ asset('storage/' . $company->img_url) }}"
                          alt="{{ $company->name }}"
                          class="h-12 mx-auto object-contain" />
+                </a>
                 @else
-                    <span class="text-xl font-bold">Company</span>
+                    <a href="{{ route('landing') }}" class="text-xl font-bold hover:underline">
+                        Company
+                    </a>
                 @endif
             </div>
 
