@@ -16,6 +16,8 @@ class Company extends Model
         'address',
         'email',
         'instagram',
+        'latitude',
+        'longitude',
     ];
 
     public $timestamps = false;

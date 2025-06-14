@@ -33,37 +33,48 @@
         </div>
 
         <!-- Right Side: Company Info -->
-        <div class="bg-gray-100 p-6 rounded-lg shadow">
-            <h2 class="text-xl font-semibold mb-4">Our Info</h2>
+        <div class="bg-gray-50 p-6 rounded-lg shadow">
+            <h2 class="text-2xl font-semibold mb-6 text-gray-800 flex items-center gap-2">
+                
+                Our Info
+            </h2>
 
             @if($company)
-            @if($company && $company->latitude && $company->longitude)
-                <div class="mb-4 rounded overflow-hidden">
-                    <iframe
-                        src="https://www.google.com/maps?q={{ $company->latitude }},{{ $company->longitude }}&output=embed"
-                        width="100%"
-                        height="200"
-                        style="border:0;"
-                        allowfullscreen=""
-                        loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade">
-                    </iframe>
-                </div>
-            @endif
-                <p><strong>Email:</strong> {{ $company->email }}</p>
-                <p><strong>Phone:</strong> {{ $company->no_telp }}</p>
-                <p><strong>Address:</strong> {{ $company->address }}</p>
-                @if($company->instagram)
-                    <p><strong>Instagram:</strong>
-                        <a href="https://instagram.com/{{ ltrim($company->instagram, ) }}" class="text-blue-600 underline" target="_blank">
-                            {{ $company->instagram }}
-                        </a>
-                    </p>
+                @if($company->latitude && $company->longitude)
+                    <div class="mb-5 overflow-hidden rounded-lg">
+                        <iframe
+                            src="https://www.google.com/maps?q={{ $company->latitude }},{{ $company->longitude }}&output=embed"
+                            width="100%"
+                            height="200"
+                            class="rounded-md shadow"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
                 @endif
+
+                <ul class="space-y-2 text-gray-700 text-base">
+                    <li><span class="font-semibold text-gray-900">Email:</span> {{ $company->email }}</li>
+                    <li><span class="font-semibold text-gray-900">Phone:</span> {{ $company->no_telp }}</li>
+                    <li><span class="font-semibold text-gray-900">Address:</span> {{ $company->address }}</li>
+                    @if($company->instagram)
+                        <li>
+                            <span class="font-semibold text-gray-900">Instagram:</span>
+                            <a href="https://instagram.com/{{ ltrim($company->instagram, '@') }}"
+                            class="text-blue-600 hover:text-blue-800 hover:underline"
+                            target="_blank">
+                                {{ $company->instagram }}
+                            </a>
+                        </li>
+                    @endif
+                </ul>
             @else
-                <p class="text-gray-500">Company information is not available.</p>
+                <p class="text-gray-500 italic">Company information is not available.</p>
             @endif
         </div>
+
     </div>
 </div>
 @endsection

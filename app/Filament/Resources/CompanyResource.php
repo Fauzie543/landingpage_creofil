@@ -46,7 +46,18 @@ class CompanyResource extends Resource
                 Forms\Components\TextInput::make('instagram')
                     ->required()
                     ->maxLength(255),
-            ]);
+                Forms\Components\TextInput::make('latitude')
+                    ->label('Latitude')
+                    ->required()
+                    ->numeric()
+                    ->step(0.0000001),
+
+                Forms\Components\TextInput::make('longitude')
+                    ->label('Longitude')
+                    ->required()
+                    ->numeric()
+                    ->step(0.0000001),
+                ]);
     }
 
     public static function table(Table $table): Table
@@ -71,6 +82,14 @@ class CompanyResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('instagram')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('latitude')
+                    ->label('Latitude')
+                    ->sortable()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('longitude')
+                    ->label('Longitude')
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
