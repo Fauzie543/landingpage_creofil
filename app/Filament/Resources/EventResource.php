@@ -17,7 +17,7 @@ class EventResource extends Resource
 {
     protected static ?string $model = Event::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
 
     public static function form(Form $form): Form
     {
@@ -44,7 +44,10 @@ class EventResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $events = \App\Models\Event::getCachedEvents();
+        
         return $table
+            ->query(fn () => \App\Models\Event::query()->whereIn('id', $events->pluck('id')))
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
@@ -97,5 +100,10 @@ class EventResource extends Resource
             'create' => Pages\CreateEvent::route('/create'),
             'edit' => Pages\EditEvent::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Management Content';
     }
 }

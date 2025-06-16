@@ -17,7 +17,7 @@ class LandingcontentResource extends Resource
 {
     protected static ?string $model = Landingcontent::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-camera';
 
     public static function form(Form $form): Form
     {
@@ -38,7 +38,9 @@ class LandingcontentResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $contents = \App\Models\LandingContent::getCachedContents();
         return $table
+            ->query(fn () => \App\Models\LandingContent::query()->whereIn('id', $contents->pluck('id')))
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
@@ -79,5 +81,10 @@ class LandingcontentResource extends Resource
             'create' => Pages\CreateLandingcontent::route('/create'),
             'edit' => Pages\EditLandingcontent::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Management Content';
     }
 }

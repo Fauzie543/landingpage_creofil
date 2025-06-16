@@ -17,7 +17,7 @@ class PosterResource extends Resource
 {
     protected static ?string $model = Poster::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-photo';
 
     public static function form(Form $form): Form
     {
@@ -37,7 +37,9 @@ class PosterResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $cachedPosters = \App\Models\Poster::getCachedPosters();
         return $table
+            ->query(fn () => \App\Models\Poster::query()->whereIn('id', $cachedPosters->pluck('id')))
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
@@ -79,5 +81,10 @@ class PosterResource extends Resource
             'create' => Pages\CreatePoster::route('/create'),
             'edit' => Pages\EditPoster::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Management Content';
     }
 }

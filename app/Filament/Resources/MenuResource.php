@@ -16,12 +16,13 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 
 class MenuResource extends Resource
 {
     protected static ?string $model = Menu::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     public static function form(Form $form): Form
     {
@@ -51,7 +52,10 @@ class MenuResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $menus = \App\Models\Menu::getCachedMenus();
+        
          return $table
+        ->query(fn () => \App\Models\Menu::query()->whereIn('id', $menus->pluck('id')))
         ->columns([
             Stack::make([
                 ImageColumn::make('img_url')
@@ -109,5 +113,10 @@ class MenuResource extends Resource
             'create' => Pages\CreateMenu::route('/create'),
             'edit' => Pages\EditMenu::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Management Menu';
     }
 }
